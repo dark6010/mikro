@@ -11,10 +11,21 @@ var LocalStrategy = require('passport-local').Strategy;
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://gp:gp@ds113566.mlab.com:13566/mikrotik', {
   useMongoClient: true,
+  reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
+  reconnectInterval: 500, // Reconnect every 500ms
   /* other options */
 })
-  .then(() =>  console.log('connection succesful'))
-  .catch((err) => console.error(err));
+  .then(() =>  {
+    console.log('connection succesful')
+    console.log(mongoose.connection.readyState);
+  })
+  .catch((err) => {
+    //console.error(err)
+    //Output - 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
+    console.log("connection succesful");
+    console.log(mongoose.connection.readyState);
+    console.log("pero sin acceso a la base de datos");
+  });
 
 var index = require('./routes/index');
 var app = express();

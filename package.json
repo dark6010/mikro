@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "local": "node bin/other",
+    "start": "node node_modules/pm2/bin/pm2 start bin/www && node node_modules/pm2/bin/pm2 start bin/other"
   },
   "dependencies": {
     "body-parser": "^1.16.1",
@@ -17,6 +18,7 @@
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^4.0.0",
     "passport-mongoose": "0.0.1",
+    "pm2": "^2.7.2",
     "pug": "^2.0.0-rc.1",
     "serve-favicon": "^2.3.2"
   },

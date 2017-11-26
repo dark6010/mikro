@@ -6,6 +6,7 @@ var userController = {};
 
 // Restrict access to root page
 userController.home = function(req, res) {
+  console.log(mongoose.connection.readyState)
   res.render('index', { user : req.user });
 };
 
@@ -34,9 +35,13 @@ userController.login = function(req, res) {
 
 // Post login
 userController.doLogin = function(req, res) {
-  passport.authenticate('local')(req, res, function () {
-    res.redirect('/');
-  });
+  if(mongoose.connection.readyState==1){
+    passport.authenticate('local')(req, res, function () {
+      res.redirect('/');
+    });
+  }else{
+    res.redirect('/desconectado')
+  }
 };
 
 // logout
@@ -46,14 +51,25 @@ userController.logout = function(req, res) {
 };
 userController.verificar= function(req, res){
   const { exec } = require('child_process');
-  exec('some.bat', (err, stdout, stderr) => {
+  exec('setter.bat', (err, stdout, stderr) => {
     if (err) {
       console.error(err);
       return;
+    }else{
+      //console.log(stdout.toString().split('\n'));
+      exec('interfacecon.bat', (err, stdout, stderr) => {
+        if (err) {
+          console.error(err);
+          return;
+        }else{
+          console.log("**"+stdout.toString().trim()+"**")
+        }
+      })
     }
-    console.log(stdout);
   });
 }
-
+userController.desconectado= function(req, res){
+  res.render('desconectado', {user: req.user})
+}
 
 module.exports = userController;

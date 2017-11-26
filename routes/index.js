@@ -20,5 +20,6 @@ router.post('/login', auth.doLogin);
 // route for logout action
 router.get('/logout', auth.logout);
 router.get('/verificar', auth.verificar)
+router.get('/desconectado', auth.desconectado)
 
 module.exports = router;
